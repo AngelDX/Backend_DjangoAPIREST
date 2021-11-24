@@ -20,11 +20,18 @@ from django.urls.conf import include
 from rest_framework import routers
 from apirest import views
 
+from rest_framework.authtoken import views as vtoken
+
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
+
 router = routers.DefaultRouter()
 # En el router vamos añadiendo los endpoints a los viewsets
 router.register('clientes', views.ClienteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('api-token-auth/',vtoken.obtain_auth_token),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
